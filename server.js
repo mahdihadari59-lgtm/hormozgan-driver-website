@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -24,57 +25,54 @@ app.use((req, res, next) => {
 });
 
 // ====================================
-// Health Check Endpoint
+// Serve Static Files (Dashboard)
 // ====================================
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ====================================
+// Routes
+// ====================================
+
+// Dashboard - Serve HTML
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Health Check Endpoint
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     message: 'سرور فعال است ✅',
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()) + ' seconds',
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    node_version: process.version
   });
 });
 
-// ====================================
-// Main Routes
-// ====================================
-app.get('/', (req, res) => {
-  res.json({
-    message: '🚗 پلتفرم هوشمند تاکسی‌یابی هرمزگان',
-    version: '2.0.0-beta1',
-    endpoints: {
-      health: '/health',
-      api: '/api',
-      docs: '/api/docs'
-    }
-  });
-});
-
-// API Status
+// API Info
 app.get('/api', (req, res) => {
   res.json({
     status: 'running',
     message: 'API فعال است',
+    version: '2.0.0-beta1',
     services: {
       auth: 'active',
       driver: 'active',
       payment: 'active'
+    },
+    endpoints: {
+      health: '/health',
+      dashboard: '/',
+      api: '/api'
     }
   });
 });
 
 // ====================================
-// Import Routes (اگه داری)
-// ====================================
-// const authRoutes = require('./src/api/auth.routes');
-// const driverRoutes = require('./src/api/driver.routes');
-// app.use('/api/auth', authRoutes);
-// app.use('/api/drivers', driverRoutes);
-
-// ====================================
 // Error Handling
 // ====================================
+
 // 404 Handler
 app.use((req, res) => {
   res.status(404).json({
@@ -104,6 +102,7 @@ const server = app.listen(PORT, HOST, () => {
   console.log('\n🚀 سرور با موفقیت راه‌اندازی شد!');
   console.log(`📍 آدرس: http://localhost:${PORT}`);
   console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
+  console.log(`🎨 Dashboard: http://localhost:${PORT}`);
   console.log(`🌍 محیط: ${process.env.NODE_ENV || 'development'}`);
   console.log(`⏰ زمان: ${new Date().toLocaleString('fa-IR')}\n`);
 });
@@ -120,7 +119,6 @@ const gracefulShutdown = (signal) => {
     process.exit(0);
   });
   
-  // اگه بعد 10 ثانیه بسته نشد، force close
   setTimeout(() => {
     console.error('⛔ خاموش کردن اجباری سرور');
     process.exit(1);
