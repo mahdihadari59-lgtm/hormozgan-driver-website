@@ -1,1 +1,331 @@
-<html><body><h1>Hormozgan Driver Test</h1></body></html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hormozgan Driver Pro - داشبورد و مستندات API</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://hormozgan-driver-pro121.onrender.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg1: #0f172a;
+            --bg2: #0b1220;
+            --card: #ffffffee;
+            --muted: #6b7280;
+            --accent1: #5B8DF9;
+            --accent2: #7C4DFF;
+            --success: #16a34a;
+            --danger: #ef4444;
+            font-family: "Segoe UI", Tahoma, "Vazir", system-ui, -apple-system, sans-serif;
+        }
+        
+        html, body {
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            color: #0f172a;
+        }
+        
+        body {
+            padding: 20px;
+            line-height: 1.5;
+        }
+        
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        header.appbar {
+            background: linear-gradient(90deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92));
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 30px rgba(2,6,23,0.5);
+            margin-bottom: 18px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 6px 18px rgba(79,70,229,0.18);
+        }
+        
+        .brand h1 {
+            margin: 0;
+            font-size: 1.15rem;
+        }
+        
+        .brand p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 0;
+            background: #eef2ff;
+            color: #0f172a;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .btn.primary {
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.18);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 18px;
+        }
+        
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        
+        .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(2,6,23,0.18);
+        }
+        
+        h2 {
+            margin: 0 0 10px 0;
+            color: #0f172a;
+        }
+        
+        .muted {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-radius: 10px;
+            padding: 12px;
+            background: #f8fafc;
+            border-right: 6px solid var(--success);
+        }
+        
+        .indicator {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: var(--success);
+            font-weight: 700;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.45; }
+            100% { opacity: 1; }
+        }
+        
+        pre.code {
+            background: #0b1220;
+            color: #e6eef8;
+            padding: 14px;
+            border-radius: 10px;
+            overflow: auto;
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        
+        .test-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        input[type="text"], input[type="url"], textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e6e9ef;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header class="appbar">
+            <div class="brand">
+                <div class="logo">HDP</div>
+                <div>
+                    <h1>هرمزگان درایور پرو</h1>
+                    <p class="muted">داشبورد و مستندات API - نسخه 2.0</p>
+                </div>
+            </div>
+            <div class="actions">
+                <a class="btn primary" href="#docs">مستندات</a>
+                <a class="btn" id="open-repo" target="_blank" rel="noopener">گیت‌هاب</a>
+            </div>
+        </header>
+        
+        <main class="grid">
+            <section>
+                <div class="card">
+                    <h2>وضعیت سرویس</h2>
+                    <div class="status-row" id="status-row">
+                        <div class="status-left">
+                            <div class="status-title">API اصلی</div>
+                            <div class="status-url" id="base-url">https://hormozgan-driver-pro121.onrender.com</div>
+                        </div>
+                        <div class="indicator">
+                            <span class="dot" aria-hidden="true"></span>
+                            <span id="status-text">ناشناخته</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px">
+                        <button class="btn primary" onclick="checkHealth()">بررسی سلامت سرویس</button>
+                        <button class="btn" onclick="openInBrowser()">باز کردن در مرورگر</button>
+                    </div>
+                    <pre id="health" class="code" style="display:none"></pre>
+                </div>
+                
+                <div id="docs" class="card" style="margin-top:14px">
+                    <h2>مستندات (خلاصه)</h2>
+                    <p class="muted">Base URL و Endpoints اصلی - برای جزئیات بیشتر از مستندات سرور استفاده کنید.</p>
+                    
+                    <div style="margin-top:10px">
+                        <strong>Base URL:</strong>
+                        <div class="muted" id="doc-base">https://hormozgan-driver-pro121.onrender.com</div>
+                    </div>
+                    
+                    <div style="margin-top:12px">
+                        <strong>Endpoints کلیدی:</strong>
+                        <pre class="code">
+GET  /health
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+GET  /api/drivers
+POST /api/drivers
+GET  /api/reports/daily
+                        </pre>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top:14px">
+                    <h2>تست سریع Endpoint</h2>
+                    <div style="margin-top:10px" class="test-grid">
+                        <button class="btn" onclick="testEndpoint('/health')" style="background:#48bb78;color:#fff">تست سلامت</button>
+                        <button class="btn" onclick="testEndpoint('/api/drivers')" style="background:#4299e1;color:#fff">لیست رانندگان</button>
+                    </div>
+                    <pre id="test-result" class="code" style="display:none"></pre>
+                </div>
+            </section>
+            
+            <aside>
+                <div class="card">
+                    <h2>اطلاعات سرویس</h2>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                        <div><strong>محیط:</strong> Production</div>
+                        <div><strong>نسخه:</strong> 2.0.0</div>
+                        <div><strong>میزبان:</strong> Render</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+    
+    <script>
+        function showJSON(targetId, obj) {
+            const el = document.getElementById(targetId);
+            el.style.display = 'block';
+            try {
+                el.textContent = JSON.stringify(obj, null, 2);
+            } catch(e) {
+                el.textContent = String(obj);
+            }
+        }
+        
+        function openInBrowser() {
+            const url = document.getElementById('base-url').textContent.trim();
+            window.open(url, '_blank', 'noopener');
+        }
+        
+        async function checkHealth() {
+            const base = document.getElementById('base-url').textContent.trim();
+            const resDiv = document.getElementById('health');
+            resDiv.style.display = 'block';
+            resDiv.textContent = 'در حال بررسی...';
+            
+            try {
+                const r = await fetch(base + '/health', { method: 'GET', cache: 'no-store' });
+                const json = await r.json();
+                showJSON('health', json);
+                document.getElementById('status-text').textContent = r.ok ? 'آنلاین' : 'پاسخ ناموفق';
+            } catch(err) {
+                resDiv.textContent = 'خطا در اتصال به سرویس: ' + err.message;
+                document.getElementById('status-text').textContent = 'آفلاین';
+            }
+        }
+        
+        async function testEndpoint(endpoint) {
+            const base = document.getElementById('base-url').textContent.trim();
+            const out = document.getElementById('test-result');
+            out.style.display = 'block';
+            out.textContent = 'در حال تست ' + endpoint + '...';
+            
+            try {
+                const r = await fetch(base + endpoint, { cache: 'no-store' });
+                const j = await r.json();
+                showJSON('test-result', { status: r.status, ok: r.ok, body: j });
+            } catch(e) {
+                showJSON('test-result', { error: e.message });
+            }
+        }
+        
+        document.getElementById('open-repo').href = 'https://github.com/mahdihadari59-lgtm/hormozgan-driver-pro121';
+        
+        // Auto check health on load
+        setTimeout(checkHealth, 600);
+    </script>
+</body>
+</html><html><body><h1>Hormozgan Driver Test</h1></body></html>
