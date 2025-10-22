@@ -1,4 +1,14 @@
-version: '3.8'
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: hormozgan-driver-web
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: npm startversion: '3.8'
 
 services:
   postgres:
