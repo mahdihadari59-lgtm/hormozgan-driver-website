@@ -1,92 +1,84 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hormozgan Driver Pro | تاکسی هوشمند هرمزگان</title>
-  <style>
-    body {
-      font-family: "Vazirmatn", sans-serif;
-      background: #f9fafb;
-      margin: 0;
-      color: #222;
-      line-height: 1.8;
-    }
-    header {
-      text-align: center;
-      background: linear-gradient(135deg, #0078ff, #00c3ff);
-      color: white;
-      padding: 40px 20px;
-    }
-    h1 { margin-bottom: 0; }
-    .lang { font-size: 14px; color: #fff; opacity: 0.8; }
-    section { max-width: 900px; margin: auto; padding: 30px; }
-    .highlight { color: #0078ff; font-weight: bold; }
-    .divider { border-top: 2px solid #eee; margin: 40px 0; }
-    footer { text-align: center; padding: 20px; background: #f1f5f9; font-size: 13px; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hormozgan Driver Pro 🚗</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Vazirmatn",sans-serif;}
+body{
+  height:100vh;
+  background:radial-gradient(circle at top,#0c0c0c,#000);
+  color:#00ff88;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+h1{font-size:2rem;margin-bottom:1rem;animation:fadeIn 2s forwards;}
+h2{font-size:1rem;color:#888;animation:fadeIn 3s forwards;}
+.btn{
+  margin-top:2rem;
+  background:#00ff88;
+  color:#000;
+  padding:12px 24px;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 0 20px #00ff88;
+}
+.btn:hover{background:#00ffaa;transform:scale(1.05);}
+.car{
+  position:absolute;
+  bottom:50px;
+  left:-200px;
+  font-size:3rem;
+  animation:drive 6s linear infinite;
+}
+@keyframes drive{
+  0%{left:-200px;}
+  50%{left:calc(100% + 50px);}
+  100%{left:-200px;}
+}
+footer{
+  position:absolute;
+  bottom:10px;
+  font-size:12px;
+  opacity:0.6;
+  color:#ccc;
+}
+audio{
+  width:80%;
+  margin-top:20px;
+  filter:drop-shadow(0 0 10px #00ff88);
+  border-radius:10px;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+</style>
 </head>
 <body>
+<h1>🚖 Hormozgan Driver Pro</h1>
+<h2>به سامانه هوشمند رانندگان خوش آمدید</h2>
 
-<header>
-  <h1>🚖 Hormozgan Driver Pro</h1>
-  <p>پلتفرم هوشمند رانندگان بومی استان هرمزگان</p>
-  <p class="lang">English | فارسی</p>
-</header>
+<!-- 🎵 پلیر صوتی -->
+<audio controls autoplay loop>
+  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes_Music/Epic_Cinematic/Scott_Holmes_Music_-_Epic_Cinematic.mp3" type="audio/mpeg">
+  مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
+</audio>
 
-<section>
-  <h2>🌟 چشم‌انداز</h2>
-  <p>
-    <strong>Hormozgan Driver Pro</strong> یک سامانه بومی حمل‌ونقل هوشمند است که برای رانندگان و مسافران استان هرمزگان طراحی شده. 
-    این پروژه با تکیه بر فناوری‌های متن‌باز، اجرا در محیط <span class="highlight">Termux</span> و بدون نیاز به سرور خارجی، 
-    راهکاری کم‌هزینه و امن برای مدیریت سفرهای درون‌شهری و بین‌شهری ارائه می‌دهد.
-  </p>
+<button class="btn" onclick="enterDashboard()">ورود به داشبورد</button>
+<div class="car">🚗💨</div>
+<footer>© 2025 Hormozgan Driver Pro | همه حقوق محفوظ است.</footer>
 
-  <div class="divider"></div>
-
-  <h2>💰 مدل درآمدی</h2>
-  <ul>
-    <li>۱۰٪ تا ۱۵٪ کمیسیون از هر سفر</li>
-    <li>پلن‌های اشتراک ویژه برای رانندگان (Premium Drivers)</li>
-    <li>تبلیغات درون‌برنامه‌ای و همکاری با برندهای محلی</li>
-    <li>سرویس‌های اختصاصی برای گردشگران، فرودگاه‌ها و بنادر</li>
-  </ul>
-
-  <div class="divider"></div>
-
-  <h2>🗺️ نقشه راه ۲۰۲۶</h2>
-  <ul>
-    <li>فاز ۱ – بندرعباس و فرودگاه (تکمیل‌شده)</li>
-    <li>فاز ۲ – جزایر قشم، کیش، هرمز (در حال اجرا)</li>
-    <li>فاز ۳ – میناب، جاسک، بندرلنگه (برنامه‌ریزی‌شده)</li>
-    <li>فاز ۴ – پوشش کامل استانی و خدمات صنعتی (۲۰۲۶)</li>
-  </ul>
-
-  <div class="divider"></div>
-
-  <h2>🚀 ویژگی‌های کلیدی</h2>
-  <ul>
-    <li>مسیریابی هوشمند با هوش مصنوعی</li>
-    <li>پشتیبانی از چند زبان (فارسی، انگلیسی، عربی)</li>
-    <li>درگاه پرداخت ایرانی (زرین‌پال، ملت، سامان)</li>
-    <li>قابل اجرا روی Android بدون نیاز به VPS</li>
-    <li>پشتیبانی ۲۴ ساعته و امنیت داده‌های محلی</li>
-  </ul>
-
-  <div class="divider"></div>
-
-  <h2>🎯 هدف و مأموریت</h2>
-  <p>
-    هدف ما ساخت پلتفرمی <strong>بومی، پایدار و شفاف</strong> است که به ایجاد اشتغال برای رانندگان محلی، 
-    توسعه گردشگری در جزایر و کاهش وابستگی به اپ‌های خارجی کمک کند.
-  </p>
-</section>
-
-<footer>
-  © 2026 Hormozgan Driver Pro — Built with ❤️ from Hormozgan, Iran<br>
-  <a href="https://github.com/mahdihadari59-lgtm/hormozgan-driver-pro121">GitHub</a> |
-  <a href="https://hormozgan-driver-pro.netlify.app">Netlify</a>
-</footer>
-
+<script>
+function enterDashboard(){
+  alert('در حال ورود به داشبورد...');
+  window.location.href='/dashboard.html';
+}
+</script>
 </body>
 </html>
