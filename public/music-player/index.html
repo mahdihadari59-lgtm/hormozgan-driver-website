@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 پلیر موزیک</title>
+    <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+    <div class="player-container">
+        <div class="album-art">
+            <div class="default-cover">🎵</div>
+            <img id="albumCover" style="display:none;" alt="Album">
+        </div>
+        <div class="song-info">
+            <h2 id="songTitle">نام آهنگ</h2>
+            <p id="artistName">خواننده</p>
+        </div>
+        <div class="progress-container">
+            <span id="currentTime">0:00</span>
+            <input type="range" id="progressBar" value="0" max="100">
+            <span id="duration">0:00</span>
+        </div>
+        <div class="controls">
+            <button id="shuffleBtn" class="control-btn">🔀</button>
+            <button id="prevBtn" class="control-btn">⏮️</button>
+            <button id="playBtn" class="control-btn play-btn">
+                <span id="playIcon">▶️</span>
+                <span id="pauseIcon" style="display:none;">⏸️</span>
+            </button>
+            <button id="nextBtn" class="control-btn">⏭️</button>
+            <button id="repeatBtn" class="control-btn">🔁</button>
+        </div>
+        <div class="volume-container">
+            <span>🔊</span>
+            <input type="range" id="volumeBar" value="70" max="100">
+            <span id="volumeValue">70%</span>
+        </div>
+        <div class="playlist">
+            <h3>📋 لیست پخش</h3>
+            <ul id="playlistItems"></ul>
+        </div>
+        <div class="status-bar">
+            <span id="statusText">آماده پخش</span>
+        </div>
+    </div>
+    <audio id="audioPlayer"></audio>
+    <script src="js/player.js"></script>
+</body>
+</html>
