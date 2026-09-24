@@ -1,0 +1,925 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDP Hormozgan Driver | پلتفرم جامع حمل‌ونقل هرمزگان</title>
+    
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <style>
+        :root {
+            --ocean-deep: #001a33;
+            --ocean-mid: #003366;
+            --ocean-light: #0066aa;
+            --gold: #ffd700;
+            --gold-light: #ffed4a;
+            --coral: #ff6b6b;
+            --pearl: #f8f9fa;
+            --text: #ffffff;
+            --text-muted: rgba(255,255,255,0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--ocean-deep);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            cursor: default;
+            user-select: none;
+        }
+
+        /* ==================== صحنه سه‌بعدی ==================== */
+        .scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        /* اقیانوس */
+        .ocean {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 300%;
+            height: 40%;
+            background: linear-gradient(180deg, 
+                rgba(0,102,170,0.3) 0%, 
+                rgba(0,51,102,0.6) 40%, 
+                rgba(0,26,51,0.9) 100%);
+            animation: oceanWave 8s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+        .ocean::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 30%, rgba(0,150,255,0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: foamFloat 5s ease-in-out infinite;
+        }
+        .ocean::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                rgba(255,255,255,0.05) 40px,
+                transparent 80px
+            );
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes oceanWave {
+            0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+            25% { transform: translateY(-15px) rotate(0.5deg); }
+            50% { transform: translateY(-8px) rotate(-0.3deg); }
+            75% { transform: translateY(-20px) rotate(0.3deg); }
+        }
+        @keyframes foamFloat {
+            0%, 100% { opacity: 0.6; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-10px); }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* نخل‌های شناور */
+        .palm-tree {
+            position: absolute;
+            bottom: 35%;
+            font-size: 8rem;
+            animation: palmSway 6s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            z-index: 2;
+            pointer-events: none;
+        }
+        .palm-tree.left { left: 5%; animation-delay: 0s; }
+        .palm-tree.right { right: 5%; animation-delay: -3s; font-size: 6rem; }
+        .palm-tree.far { right: 20%; bottom: 38%; font-size: 4rem; animation-delay: -1.5s; opacity: 0.7; }
+
+        @keyframes palmSway {
+            0%, 100% { transform: rotate(-2deg) translateY(0); }
+            25% { transform: rotate(3deg) translateY(-10px); }
+            50% { transform: rotate(-1deg) translateY(-5px); }
+            75% { transform: rotate(2deg) translateY(-15px); }
+        }
+
+        /* آسمان پرستاره */
+        .stars {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+            box-shadow: 0 0 6px 2px rgba(255,255,255,0.5);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(2); }
+        }
+
+        /* ماه */
+        .moon {
+            position: absolute;
+            top: 8%;
+            left: 15%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 40% 40%, #fff8dc, #ffd700);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 60px 20px rgba(255,215,0,0.4),
+                0 0 120px 40px rgba(255,215,0,0.2),
+                0 0 200px 80px rgba(255,215,0,0.1);
+            animation: moonGlow 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 60px 20px rgba(255,215,0,0.4), 0 0 120px 40px rgba(255,215,0,0.2); }
+            50% { box-shadow: 0 0 80px 30px rgba(255,215,0,0.6), 0 0 160px 60px rgba(255,215,0,0.3); }
+        }
+
+        /* ==================== ذرات طلایی تعاملی ==================== */
+        .gold-particles {
+            position: fixed;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px 3px rgba(255,215,0,0.6);
+            animation: floatUp 7s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg) scale(0); opacity: 0; }
+            10% { transform: translateY(-10px) rotate(36deg) scale(1); opacity: 1; }
+            90% { transform: translateY(-90vh) rotate(324deg) scale(0.8); opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg) scale(0); opacity: 0; }
+        }
+
+        /* دنباله موس */
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.6), transparent);
+            pointer-events: none;
+            z-index: 5;
+            transition: transform 0.1s;
+            animation: cursorPulse 2s ease-in-out infinite;
+        }
+        @keyframes cursorPulse {
+            0%, 100% { box-shadow: 0 0 20px 5px rgba(255,215,0,0.3); }
+            50% { box-shadow: 0 0 40px 10px rgba(255,215,0,0.5); }
+        }
+
+        /* ==================== اپلیکیشن ==================== */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* سایدبار شیشه‌ای */
+        .sidebar {
+            width: 270px;
+            min-width: 270px;
+            background: rgba(0,26,51,0.7);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 20px 14px;
+            z-index: 20;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 60px rgba(0,102,170,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, 
+                rgba(255,215,0,0.05) 0%, 
+                transparent 30%,
+                transparent 70%,
+                rgba(0,150,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            padding: 20px 10px 30px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ffed4a, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
+            animation: logoShine 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes logoShine {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255,215,0,0.8)); }
+        }
+
+        .nav-section {
+            position: relative;
+            z-index: 1;
+        }
+        .nav-divider {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.3);
+            padding: 12px 14px 6px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 16px;
+            border-radius: 16px;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.88rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border-color: rgba(255,215,0,0.3);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .nav-item:hover::before { opacity: 1; }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+            color: #ffd700;
+            border-color: rgba(255,215,0,0.5);
+            box-shadow: 
+                0 0 20px rgba(255,215,0,0.2),
+                inset 0 0 20px rgba(255,215,0,0.05);
+            font-weight: 700;
+        }
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-10deg); }
+        .badge {
+            margin-right: auto;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: white;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* محتوای اصلی */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px 35px;
+            position: relative;
+            z-index: 10;
+        }
+        .page {
+            display: none;
+            animation: pageIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .page.active { display: block; }
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* کارت‌های شیشه‌ای */
+        .glass-card {
+            background: rgba(0,40,70,0.6);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            transition: left 0.8s;
+        }
+        .glass-card:hover::after { left: 100%; }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 40px rgba(255,215,0,0.1);
+            border-color: rgba(255,215,0,0.2);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+        }
+
+        /* گرید‌ها */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+        /* استات کارت */
+        .stat-card {
+            background: rgba(0,40,70,0.5);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,215,0,0.1);
+            border-color: rgba(255,215,0,0.3);
+        }
+        .stat-icon {
+            width: 55px; height: 55px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .stat-card:hover .stat-icon::after { opacity: 1; }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+
+        /* فرم‌ها */
+        .form-group { margin-bottom: 18px; }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.6);
+        }
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .form-input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 25px rgba(255,215,0,0.15);
+            background: rgba(255,255,255,0.07);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn:hover::after { transform: translateX(100%); }
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a1a;
+            box-shadow: 0 8px 25px rgba(255,215,0,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.5);
+        }
+        .btn-block { width: 100%; }
+        .btn-sm { padding: 8px 16px; font-size: 0.8rem; }
+
+        /* چت */
+        .chat-messages {
+            height: 380px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 10px;
+            margin-bottom: 18px;
+        }
+        .chat-msg {
+            max-width: 80%;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            line-height: 1.9;
+            animation: msgPop 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.27);
+        }
+        @keyframes msgPop {
+            from { opacity: 0; transform: scale(0.8) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .chat-msg.bot {
+            background: rgba(0,60,100,0.7);
+            align-self: flex-start;
+            border-bottom-right-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .chat-msg.user {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
+            align-self: flex-end;
+            border-bottom-left-radius: 6px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .sidebar { width: 65px; min-width: 65px; padding: 12px 6px; }
+            .nav-item span:not(.nav-icon) { display: none; }
+            .nav-item { justify-content: center; padding: 14px; }
+            .sidebar-logo { font-size: 1rem; }
+            .main-content { padding: 20px; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .page-title { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== صحنه ==================== -->
+    <div class="scene">
+        <div class="stars" id="stars"></div>
+        <div class="moon"></div>
+        <div class="palm-tree left">🌴</div>
+        <div class="palm-tree right">🌴</div>
+        <div class="palm-tree far">🌴</div>
+        <div class="ocean"></div>
+    </div>
+
+    <!-- ==================== ذرات طلایی ==================== -->
+    <div class="gold-particles" id="goldParticles"></div>
+    
+    <!-- ==================== دنباله موس ==================== -->
+    <div class="cursor-trail" id="cursorTrail"></div>
+
+    <!-- ==================== اپلیکیشن ==================== -->
+    <div class="app-container">
+        
+        <!-- سایدبار -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">✦ HDP ✦</div>
+            
+            <div class="nav-section">
+                <div class="nav-divider">🏠 اصلی</div>
+                <div class="nav-item active" data-page="home">
+                    <span class="nav-icon">🏠</span> <span>خانه</span>
+                </div>
+                <div class="nav-item" data-page="dashboard">
+                    <span class="nav-icon">📊</span> <span>داشبورد</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-divider">🚕 رانندگان</div>
+                <div class="nav-item" data-page="login">
+                    <span class="nav-icon">🔐</span> <span>ورود</span>
+                </div>
+                <div class="nav-item" data-page="driver-verify">
+                    <span class="nav-icon">🚕</span> <span>احراز هویت</span>
+                    <span class="badge">جدید</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-divider">💬 ارتباط</div>
+                <div class="nav-item" data-page="contact">
+                    <span class="nav-icon">📞</span> <span>تماس با ما</span>
+                </div>
+                <div class="nav-item" data-page="ai-assistant">
+                    <span class="nav-icon">🤖</span> <span>دستیار هوشمند</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- محتوای اصلی -->
+        <main class="main-content" id="mainContent">
+            
+            <!-- صفحه خانه -->
+            <div class="page active" id="page-home">
+                <h1 class="page-title">🏝️ به هرمزگان هوشمند خوش آمدید</h1>
+                <p class="page-subtitle">پلتفرم جامع حمل‌ونقل، گردشگری و خدمات رانندگان استان هرمزگان</p>
+                
+                <div class="grid-4" style="margin-bottom:28px;">
+                    <div class="stat-card" onclick="navigateTo('dashboard')">
+                        <div class="stat-icon" style="background:rgba(0,150,255,0.2);color:#0096ff;">👥</div>
+                        <div><div class="stat-value">۱,۴۵۸</div><div class="stat-label">راننده فعال</div></div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('driver-verify')">
+                        <div class="stat-icon" style="background:rgba(255,165,0,0.2);color:#ffa500;">⏳</div>
+                        <div><div class="stat-value">۲۳</div><div class="stat-label">در انتظار تأیید</div></div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('contact')">
+                        <div class="stat-icon" style="background:rgba(0,200,150,0.2);color:#00c896;">📞</div>
+                        <div><div class="stat-value">۲۴/۷</div><div class="stat-label">پشتیبانی</div></div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('ai-assistant')">
+                        <div class="stat-icon" style="background:rgba(200,150,255,0.2);color:#c896ff;">🤖</div>
+                        <div><div class="stat-value">AI</div><div class="stat-label">دستیار هوشمند</div></div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h2 style="margin-bottom:16px;">🚀 آخرین اخبار HDP</h2>
+                        <p style="color:rgba(255,255,255,0.6);line-height:2;">
+                            ✨ <strong style="color:#ffd700;">ثبت‌نام رانندگان جدید</strong> در بندرعباس، میناب و قشم آغاز شد.<br>
+                            ⛴️ <strong style="color:#ffd700;">تاکسی دریایی</strong> مسیر بندرعباس-هرمز راه‌اندازی شد.<br>
+                            🥭 <strong style="color:#ffd700;">جشنواره انبه میناب</strong> - خرداد ۱۴۰۴ با تخفیف ویژه HDP.<br>
+                            📱 <strong style="color:#ffd700;">بروزرسانی اپلیکیشن</strong> نسخه ۵.۰ با قابلیت‌های جدید.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <h2 style="margin-bottom:16px;">📋 دسترسی سریع</h2>
+                        <div style="display:flex;flex-direction:column;gap:12px;">
+                            <button class="btn btn-primary btn-block" onclick="navigateTo('login')">🔐 ورود به حساب کاربری</button>
+                            <button class="btn btn-primary btn-block" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24);" onclick="navigateTo('driver-verify')">🚕 احراز هویت راننده</button>
+                            <button class="btn btn-primary btn-block" style="background:linear-gradient(135deg,#4834d4,#686de0);" onclick="navigateTo('ai-assistant')">🤖 سوال از دستیار هوشمند</button>
+                            <button class="btn btn-primary btn-block" style="background:linear-gradient(135deg,#20bf6b,#26de81);" onclick="navigateTo('contact')">📞 تماس با پشتیبانی</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحه ورود -->
+            <div class="page" id="page-login">
+                <h1 class="page-title">🔐 ورود به HDP</h1>
+                <p class="page-subtitle">برای استفاده از خدمات هوشمند حمل‌ونقل هرمزگان وارد شوید</p>
+                <div class="glass-card" style="max-width:480px;margin:0 auto;">
+                    <div class="form-group">
+                        <label class="form-label">📱 شماره موبایل</label>
+                        <input class="form-input" type="tel" placeholder="۰۹۱۲۳۴۵۶۷۸۹" id="loginPhone">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">🔒 رمز عبور</label>
+                        <input class="form-input" type="password" placeholder="••••••••" id="loginPassword">
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="handleLogin()">🚀 ورود به حساب</button>
+                    <p style="text-align:center;margin-top:18px;color:rgba(255,255,255,0.5);">
+                        <a href="#" style="color:#ffd700;">فراموشی رمز</a> | 
+                        <a href="#" style="color:#ffd700;">ثبت‌نام نکرده‌اید؟</a>
+                    </p>
+                    <div id="loginMessage" style="text-align:center;margin-top:14px;"></div>
+                </div>
+            </div>
+
+            <!-- صفحه احراز هویت -->
+            <div class="page" id="page-driver-verify">
+                <h1 class="page-title">🚕 احراز هویت راننده</h1>
+                <p class="page-subtitle">بارگذاری مدارک برای فعال‌سازی حساب رانندگی در HDP</p>
+                <div class="glass-card" style="max-width:650px;margin:0 auto;">
+                    <div style="background:rgba(0,200,150,0.1);border-right:4px solid #00c896;padding:16px;border-radius:12px;margin-bottom:24px;">
+                        ✅ <strong>مرحله ۱:</strong> اطلاعات اولیه (تکمیل)<br>
+                        ⏳ <strong>مرحله ۲:</strong> بارگذاری مدارک (در حال انجام)<br>
+                        ⏸️ <strong>مرحله ۳:</strong> تأیید نهایی
+                    </div>
+                    <div class="form-group"><label class="form-label">🎫 گواهینامه</label><input class="form-input" type="file"></div>
+                    <div class="form-group"><label class="form-label">🪪 کارت ملی</label><input class="form-input" type="file" multiple></div>
+                    <div class="form-group"><label class="form-label">🛡️ بیمه‌نامه</label><input class="form-input" type="file"></div>
+                    <div class="form-group"><label class="form-label">🔧 معاینه فنی</label><input class="form-input" type="file"></div>
+                    <div class="form-group"><label class="form-label">📸 عکس پرسنلی</label><input class="form-input" type="file"></div>
+                    <button class="btn btn-primary btn-block" onclick="alert('✅ مدارک با موفقیت بارگذاری شد!')">📤 ارسال مدارک</button>
+                </div>
+            </div>
+
+            <!-- صفحه تماس -->
+            <div class="page" id="page-contact">
+                <h1 class="page-title">📞 تماس با HDP</h1>
+                <p class="page-subtitle">راه‌های ارتباط با پشتیبانی و دفاتر هرمزگان</p>
+                <div class="grid-3" style="margin-bottom:28px;">
+                    <div class="glass-card" style="text-align:center;">
+                        <div style="font-size:3rem;">📱</div>
+                        <h3>تلفن</h3>
+                        <p style="color:#ffd700;"><strong>۰۷۶-۳۳۳۳۱۱۱</strong></p>
+                        <p style="color:rgba(255,255,255,0.5);">پشتیبانی ۲۴ ساعته</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center;">
+                        <div style="font-size:3rem;">💬</div>
+                        <h3>واتساپ</h3>
+                        <p style="color:#ffd700;"><strong>۰۹۱۷۷۰۰۰۰۰۰</strong></p>
+                    </div>
+                    <div class="glass-card" style="text-align:center;">
+                        <div style="font-size:3rem;">📧</div>
+                        <h3>ایمیل</h3>
+                        <p style="color:#ffd700;"><strong>support@hormozgandriver.ir</strong></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="max-width:650px;margin:0 auto;">
+                    <h3>📝 فرم تماس</h3>
+                    <div class="form-group"><label class="form-label">نام</label><input class="form-input" placeholder="نام خود را وارد کنید"></div>
+                    <div class="form-group"><label class="form-label">شماره تماس</label><input class="form-input" type="tel" placeholder="۰۹۱۲۳۴۵۶۷۸۹"></div>
+                    <div class="form-group"><label class="form-label">موضوع</label><input class="form-input" placeholder="موضوع پیام"></div>
+                    <div class="form-group"><label class="form-label">پیام</label><textarea class="form-input" rows="4" placeholder="پیام خود را بنویسید..."></textarea></div>
+                    <button class="btn btn-primary btn-block" onclick="alert('✅ پیام ارسال شد!')">📨 ارسال پیام</button>
+                </div>
+            </div>
+
+            <!-- صفحه دستیار هوشمند -->
+            <div class="page" id="page-ai-assistant">
+                <h1 class="page-title">🤖 دستیار هوشمند HDP</h1>
+                <p class="page-subtitle">مشاور تخصصی رانندگان هرمزگان با پاسخ‌های جامع</p>
+                <div class="glass-card" style="max-width:750px;margin:0 auto;">
+                    <div class="chat-messages" id="aiMessages">
+                        <div class="chat-msg bot">
+                            👋 <strong>سلام!</strong> من دستیار هوشمند HDP هستم.<br>
+                            می‌تونم راهنماییت کنم در:<br>
+                            🚦 قوانین و جرایم | ⚠️ نقاط حادثه‌خیز | 🌤️ آب‌وهوا | 🎉 جشنواره‌ها | 🚕 ثبت‌نام | 📞 تماس
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <input class="form-input" id="aiInput" placeholder="سوال خود را بپرسید..." style="flex:1;" onkeypress="if(event.key==='Enter')sendAIMessage()">
+                        <button class="btn btn-primary" onclick="sendAIMessage()">➤</button>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                        <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="quickAsk(this)">جریمه سرعت</button>
+                        <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="quickAsk(this)">نقاط حادثه‌خیز</button>
+                        <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="quickAsk(this)">آب‌وهوای میناب</button>
+                        <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="quickAsk(this)">جشنواره‌های قشم</button>
+                        <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="quickAsk(this)">ثبت‌نام راننده</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحه داشبورد -->
+            <div class="page" id="page-dashboard">
+                <h1 class="page-title">📊 داشبورد مدیریتی</h1>
+                <p class="page-subtitle">نمای کلی وضعیت پلتفرم HDP</p>
+                <div class="grid-4" style="margin-bottom:28px;">
+                    <div class="stat-card"><div class="stat-icon" style="background:rgba(0,150,255,0.2);color:#0096ff;">👥</div><div><div class="stat-value">۱,۴۵۸</div><div class="stat-label">کل رانندگان</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:rgba(0,200,150,0.2);color:#00c896;">✅</div><div><div class="stat-value">۱,۴۳۵</div><div class="stat-label">تأیید شده</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:rgba(255,165,0,0.2);color:#ffa500;">⏳</div><div><div class="stat-value">۲۳</div><div class="stat-label">در انتظار</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:rgba(255,71,87,0.2);color:#ff4757;">🚫</div><div><div class="stat-value">۸</div><div class="stat-label">مسدود</div></div></div>
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:18px;">📋 آخرین درخواست‌های احراز هویت</h3>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+                            <thead><tr style="border-bottom:2px solid rgba(255,255,255,0.1);"><th style="text-align:right;padding:12px;color:rgba(255,255,255,0.5);">نام</th><th style="text-align:right;padding:12px;color:rgba(255,255,255,0.5);">شهر</th><th style="text-align:right;padding:12px;color:rgba(255,255,255,0.5);">تاریخ</th><th style="text-align:right;padding:12px;color:rgba(255,255,255,0.5);">وضعیت</th><th style="text-align:right;padding:12px;color:rgba(255,255,255,0.5);">عملیات</th></tr></thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:12px;">علی محمدی</td><td style="padding:12px;">بندرعباس</td><td style="padding:12px;">۱۴۰۴/۰۲/۱۵</td><td style="padding:12px;"><span style="color:#ffa500;">⏳ در انتظار</span></td><td style="padding:12px;"><button class="btn btn-sm" style="background:#00c896;color:#fff;" onclick="alert('✅ تأیید شد')">تأیید</button> <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;" onclick="alert('❌ رد شد')">رد</button></td></tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:12px;">فاطمه رضایی</td><td style="padding:12px;">میناب</td><td style="padding:12px;">۱۴۰۴/۰۲/۱۴</td><td style="padding:12px;"><span style="color:#ffa500;">⏳ در انتظار</span></td><td style="padding:12px;"><button class="btn btn-sm" style="background:#00c896;color:#fff;">تأیید</button> <button class="btn btn-sm" style="background:rgba(255,255,255,0.05);color:#fff;">رد</button></td></tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:12px;">حسین دریانورد</td><td style="padding:12px;">قشم</td><td style="padding:12px;">۱۴۰۴/۰۲/۱۳</td><td style="padding:12px;"><span style="color:#00c896;">✅ تأیید شده</span></td><td style="padding:12px;">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // ==================== ناوبری ====================
+        function navigateTo(pageName) {
+            document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === pageName) item.classList.add('active');
+            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const target = document.getElementById('page-' + pageName);
+            if (target) {
+                target.classList.add('active');
+                target.style.animation = 'none';
+                target.offsetHeight;
+                target.style.animation = '';
+            }
+            document.getElementById('mainContent').scrollTop = 0;
+            if (pageName === 'ai-assistant') {
+                setTimeout(() => { const inp = document.getElementById('aiInput'); if (inp) inp.focus(); }, 400);
+            }
+        }
+
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', function() { navigateTo(this.dataset.page); });
+        });
+
+        // ==================== ورود ====================
+        function handleLogin() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const msg = document.getElementById('loginMessage');
+            if (!phone || !password) { msg.innerHTML = '<span style="color:#ff4757;">❌ فیلدها را پر کنید</span>'; return; }
+            msg.innerHTML = '<span style="color:#ffd700;">⏳ در حال ورود...</span>';
+            setTimeout(() => {
+                msg.innerHTML = '<span style="color:#00c896;">✅ ورود موفق! انتقال به داشبورد...</span>';
+                setTimeout(() => navigateTo('dashboard'), 1200);
+            }, 1500);
+        }
+
+        // ==================== دستیار هوشمند ====================
+        const aiDB = {
+            'سرعت': '🚦 <strong>سرعت مجاز:</strong> بزرگراه ۱۱۰/۹۰ | جاده اصلی ۹۵/۸۵ | شهری ۶۰-۳۰km/h<br>💸 <strong>جرایم:</strong> تا ۱۰km: ۲۰۰ت | ۱۰-۲۰: ۳۰۰ت | ۲۰-۳۰: ۵۰۰ت+۳نمره | ۳۰+: ۱,۰۰۰,۰۰۰+۸نمره',
+            'جریمه': '💸 <strong>جرایم ۱۴۰۴:</strong> کمربند ۶۰۰ت | موبایل ۱,۰۰۰,۰۰۰+۵نمره | چراغ قرمز ۱,۰۰۰,۰۰۰+۱۰نمره | سبقت ۱,۲۰۰,۰۰۰+۱۰نمره | بدون گواهینامه ۱,۵۰۰,۰۰۰+توقیف',
+            'حادثه': '⚠️ <strong>نقاط خطر:</strong> بندرعباس-میناب: سه‌راهی تازیان، گردنه گچین، پل شمیل | بندرعباس-حاجی‌آباد: گردنه تنگه زاغ | بندرعباس-بندرلنگه: گردنه بستک',
+            'آب و هوا': '🌤️ بندرعباس: تابستان ۴۰-۵۰°C (شرجی ۹۵٪) زمستان ۱۲-۲۵°C | حاجی‌آباد: خنک‌ترین (۳۰-۳۸°C تابستان) | قشم/کیش: جزیره‌ای مرطوب | بهترین زمان: آبان تا فروردین',
+            'جشنواره': '🎉 بهار: نوروز دریا، جشن عسل رودان | تابستان: جشنواره کیش، جشن خرما | پاییز: جشنواره ملی خرما، ماهیگیری جاسک | زمستان: جشنواره بادگیر قشم، غذاهای دریایی بندرعباس',
+            'ثبت‌نام': '🚕 <strong>شرایط:</strong> سن ۲۱-۶۵، گواهینامه پایه ۳، خودرو مدل ۱۳۹۵+، بیمه و معاینه فنی<br>💰 <strong>درآمد:</strong> ۱۵-۴۰ میلیون (کارمزد ۸٪)<br>📞 تماس: ۰۷۶-۳۳۳۳۰۰۰',
+            'تماس': '📞 <strong>HDP:</strong> پشتیبانی: ۰۷۶-۳۳۳۳۱۱۱ | دفتر: ۰۷۶-۳۳۳۳۰۰۰ | واتساپ: ۰۹۱۷۷۰۰۰۰۰۰ | ایمیل: support@hormozgandriver.ir | بندرعباس، بلوار امام'
+        };
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const msgs = document.getElementById('aiMessages');
+            msgs.innerHTML += '<div class="chat-msg user">' + text + '</div>';
+            input.value = '';
+            let answer = '🤔 دقیق‌تر بپرسید. من در زمینه قوانین، جرایم، نقاط حادثه‌خیز، آب‌وهوا، جشنواره‌ها و ثبت‌نام راهنمایی می‌کنم.';
+            const q = text.toLowerCase();
+            for (let key in aiDB) { if (q.includes(key)) { answer = aiDB[key]; break; } }
+            setTimeout(() => { msgs.innerHTML += '<div class="chat-msg bot">' + answer + '</div>'; msgs.scrollTop = msgs.scrollHeight; }, 600);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function quickAsk(btn) { document.getElementById('aiInput').value = btn.textContent; sendAIMessage(); }
+
+        // ==================== ذرات طلایی ====================
+        function createGoldParticles() {
+            const container = document.getElementById('goldParticles');
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'gold-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                p.style.animationDelay = Math.random() * 7 + 's';
+                p.style.width = (Math.random() * 4 + 2) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        }
+
+        // ==================== ستاره‌ها ====================
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 60 + '%';
+                s.style.animationDelay = Math.random() * 3 + 's';
+                s.style.width = (Math.random() * 3 + 1) + 'px';
+                s.style.height = s.style.width;
+                container.appendChild(s);
+            }
+        }
+
+        // ==================== دنباله موس ====================
+        const trail = document.getElementById('cursorTrail');
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            trail.style.left = (mouseX - 10) + 'px';
+            trail.style.top = (mouseY - 10) + 'px';
+            trail.style.opacity = '1';
+        });
+        document.addEventListener('mouseleave', () => { trail.style.opacity = '0'; });
+
+        // ==================== راه‌اندازی ====================
+        function init() {
+            createGoldParticles();
+            createStars();
+            console.log('🌟 HDP Hormozgan Driver - نسخه طلایی');
+            console.log('🏝️ تم اقیانوسی هرمزگان');
+            console.log('✨ ذرات طلایی تعاملی');
+            console.log('🌴 نخل‌های شناور');
+        }
+        init();
+    </script>
+</body>
+</html>
